@@ -24,8 +24,8 @@ public class AuthorizeController {
    @Value("${github.client.secret}")   //配置文件里读key是github.client_secret的value，把它赋值到client_secret
     private String clientSecret;
 
-   /* @Value("${github.redirect.uri}") //配置文件里读key是github..redirect_uri的value，把它赋值到redirect_uri
-    private String redirectUri;*/
+    @Value("${github.redirect.uri}") //配置文件里读key是github..redirect_uri的value，把它赋值到redirect_uri
+    private String redirectUri = "http://localhost:8887/callback";
 
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,  //请求参数接收网站的code
@@ -34,8 +34,8 @@ public class AuthorizeController {
         accessTokenDTO.setClient_id(clientId);
         accessTokenDTO.setClient_secret(clientSecret);
         accessTokenDTO.setCode(code);
-        accessTokenDTO.setRedirect_uri("http://localhost:8887/callback");
-        //accessTokenDTO.setRedirect_uri(redirectUri);
+        //accessTokenDTO.setRedirect_uri("http://localhost:8887/callback");
+        accessTokenDTO.setRedirect_uri(redirectUri);
         accessTokenDTO.setState(state);
         String accessToken = githubProvider.getAccessToken(accessTokenDTO);
         GithubUser user = githubProvider.getUser(accessToken);
