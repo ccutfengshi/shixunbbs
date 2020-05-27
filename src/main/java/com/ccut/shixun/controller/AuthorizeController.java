@@ -25,7 +25,8 @@ public class AuthorizeController {
     private String clientSecret;
 
     @Value("${github.redirect.uri}") //配置文件里读key是github..redirect_uri的value，把它赋值到redirect_uri
-    private String redirectUri = "http://localhost:8887/callback";
+    //private String redirectUri = "http://localhost:8887/callback";
+    private String redirectUri;
 
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,  //请求参数接收网站的code
