@@ -28,3 +28,8 @@
 [Live Reload](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei/related)  
 [Postman](https://chrome.google.com/webstore/detail/coohjcphdfgbiolnekdpbcijmhambjff)
  
+ 
+ ## 各个包详解
+ * controller：控制层
+ * provider：提供实现
+ * dto：即Data Transfer Object，数据传输层
