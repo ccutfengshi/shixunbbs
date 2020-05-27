@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * 负责接收github给callback回来的内容
  */
@@ -30,7 +32,9 @@ public class AuthorizeController {
 
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,  //请求参数接收网站的code
-                           @RequestParam(name = "state") String state){  //请求参数接收网站的state
+                           @RequestParam(name = "state") String state, //请求参数接收网站的state
+                           HttpServletRequest request
+                           ){
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
         accessTokenDTO.setClient_id(clientId);
         accessTokenDTO.setClient_secret(clientSecret);
@@ -40,7 +44,13 @@ public class AuthorizeController {
         accessTokenDTO.setState(state);
         String accessToken = githubProvider.getAccessToken(accessTokenDTO);
         GithubUser user = githubProvider.getUser(accessToken);
-        System.out.println(user.getName());
-        return "index"; //返回到index界面
+        if(user != null) {
+            //登录成功 写cookie和session
+            request.getSession().setAttribute("user",user); //把user对象放到session里面
+            return "redirect:/";  //跳转到主页
+        }else {
+            //登录失败，重新登录
+            return "redirect:/";
+        }
     }
 }
